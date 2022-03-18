@@ -20,7 +20,7 @@ const Timer = () => {
     }
   }, [activeState]);
 
-  useKey(" ", increment);
+  useKey(" ", increment, { event: "keyup" });
   console.log(time);
 
   const StartTimer = () => {
