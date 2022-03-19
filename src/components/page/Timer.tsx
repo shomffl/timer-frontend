@@ -8,7 +8,22 @@ const Timer = () => {
   const [startCalc, setStartCalc] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const [activeState, setActiveState] = useState<number>(0);
+  const [inspectionTime, setInspectionTime] = useState<number>(15);
+  const [handleInspection, setHandleInspection] = useState<boolean>(false);
   const increment = () => setActiveState((activeState) => activeState + 1);
+
+  useEffect(() => {
+    if (handleInspection === true) {
+      const interval = setInterval(() => {
+        setInspectionTime(inspectionTime - 1);
+        console.log(inspectionTime);
+      }, 1000);
+      return () => {
+        clearInterval(interval);
+        console.log("コンポーネントがアンマウントされました");
+      };
+    }
+  });
 
   useEffect(() => {
     if (activeState === 1) {
@@ -43,8 +58,9 @@ const Timer = () => {
   }, [startCalc]);
   return (
     <>
-      <button onClick={StartTimer}>start</button>
-      <button onClick={StopTimer}>stop</button>
+      <button onClick={(e) => setHandleInspection(!handleInspection)}>
+        start
+      </button>
     </>
   );
 };
