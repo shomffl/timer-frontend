@@ -14,6 +14,15 @@ const Timer = () => {
 
   const increment = () => setActiveState((activeState) => activeState + 1);
 
+  const handleSendTimes = () => {
+    const data = {
+      times: sendTimes,
+    };
+    axios
+      .post("http://127.0.0.1:8000/test", data)
+      .then((res) => console.log(res.data));
+  };
+
   useEffect(() => {
     if (handleInspection === true) {
       const interval = setInterval(() => {
@@ -33,12 +42,12 @@ const Timer = () => {
       setHandleInspection(true);
     } else if (activeState === 2) {
       setHandleInspection(false);
-      setInspectionTime(15);
       StartTimer();
     } else if (activeState === 3) {
       StopTimer();
       setActiveState(0);
     }
+    return () => setInspectionTime(15);
   }, [activeState]);
 
   useKey(" ", increment, { event: "keyup" });
@@ -64,9 +73,7 @@ const Timer = () => {
   }, [startCalc]);
   return (
     <>
-      <button onClick={(e) => setHandleInspection(!handleInspection)}>
-        start
-      </button>
+      <button onClick={handleSendTimes}>send</button>
       <div>{inspectionTime}</div>
       <div>{time}</div>
     </>
