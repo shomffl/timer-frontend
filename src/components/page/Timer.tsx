@@ -10,6 +10,8 @@ const Timer = () => {
   const [activeState, setActiveState] = useState<number>(0);
   const [inspectionTime, setInspectionTime] = useState<number>(15);
   const [handleInspection, setHandleInspection] = useState<boolean>(false);
+  const [sendTimes, setSendTimes] = useState<number[]>([]);
+
   const increment = () => setActiveState((activeState) => activeState + 1);
 
   useEffect(() => {
@@ -20,23 +22,26 @@ const Timer = () => {
       }, 1000);
       return () => {
         clearInterval(interval);
-        console.log("コンポーネントがアンマウントされました");
       };
     }
   });
 
   useEffect(() => {
     if (activeState === 1) {
-      StartTimer();
+      setTime(0);
+      setStartCalc(false);
+      setHandleInspection(true);
     } else if (activeState === 2) {
-      StopTimer();
+      setHandleInspection(false);
+      setInspectionTime(15);
+      StartTimer();
     } else if (activeState === 3) {
+      StopTimer();
       setActiveState(0);
     }
   }, [activeState]);
 
   useKey(" ", increment, { event: "keyup" });
-  console.log(time);
 
   const StartTimer = () => {
     const startTime = performance.now();
@@ -53,6 +58,7 @@ const Timer = () => {
       const calc: number = (stop - start) / 1000;
       const format_calc: number = Number(calc.toFixed(3));
       setTime(format_calc);
+      setSendTimes([...sendTimes, format_calc]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startCalc]);
@@ -61,6 +67,8 @@ const Timer = () => {
       <button onClick={(e) => setHandleInspection(!handleInspection)}>
         start
       </button>
+      <div>{inspectionTime}</div>
+      <div>{time}</div>
     </>
   );
 };
