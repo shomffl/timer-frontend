@@ -11,6 +11,7 @@ const Timer = () => {
   const [inspectionTime, setInspectionTime] = useState<number>(15);
   const [handleInspection, setHandleInspection] = useState<boolean>(false);
   const [sendTimes, setSendTimes] = useState<number[]>([]);
+  const [changeDisabled, setChangeDisabled] = useState<boolean>(true);
 
   const increment = () => setActiveState((activeState) => activeState + 1);
 
@@ -18,9 +19,10 @@ const Timer = () => {
     const data = {
       times: sendTimes,
     };
-    axios
-      .post("http://127.0.0.1:8000/test", data)
-      .then((res) => console.log(res.data));
+    axios.post("http://127.0.0.1:8000/record-times", data).then((res) => {
+      console.log(res.data);
+      setSendTimes([]);
+    });
   };
 
   useEffect(() => {
@@ -68,12 +70,19 @@ const Timer = () => {
       const format_calc: number = Number(calc.toFixed(3));
       setTime(format_calc);
       setSendTimes([...sendTimes, format_calc]);
+      if (sendTimes.length === 9) {
+        setChangeDisabled(false);
+      } else {
+        setChangeDisabled(true);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startCalc]);
   return (
     <>
-      <button onClick={handleSendTimes}>send</button>
+      <button onClick={handleSendTimes} disabled={changeDisabled}>
+        send
+      </button>
       <div>{inspectionTime}</div>
       <div>{time}</div>
     </>
