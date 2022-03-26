@@ -26,6 +26,7 @@ const Timer = () => {
     });
   };
 
+  // インスペクションタイムのカウントダウンを行う
   useEffect(() => {
     if (handleInspection === true) {
       const interval = setInterval(() => {
@@ -38,6 +39,7 @@ const Timer = () => {
     }
   });
 
+  // activeStateの数字に応じて挙動を変える
   useEffect(() => {
     if (activeState === 1) {
       setTime(0);
@@ -55,16 +57,20 @@ const Timer = () => {
 
   useKey(" ", increment, { event: "keyup" });
 
+  // 計測開始
   const StartTimer = () => {
     const startTime = performance.now();
     setStart(startTime);
   };
+
+  // 計測終了
   const StopTimer = () => {
     const stopTime = performance.now();
     setStop(stopTime);
     setStartCalc(true);
   };
 
+  // 計測時間の形を整える
   useEffect(() => {
     if (startCalc === true) {
       const calc: number = (stop - start) / 1000;
@@ -82,8 +88,7 @@ const Timer = () => {
   return (
     <>
       <ScrambleCode />
-      <div>{inspectionTime}</div>
-      <div>{time}</div>
+      {handleInspection ? <div>{inspectionTime}</div> : <div>{time}</div>}
       <button onClick={handleSendTimes} disabled={changeDisabled}>
         send
       </button>
