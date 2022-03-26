@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useKey } from "react-use";
 import axios from "axios";
+import ScrambleCode from "./ScrambleCode";
 
 const Timer = () => {
   const [start, setStart] = useState<number>(0);
@@ -80,11 +81,12 @@ const Timer = () => {
   }, [startCalc]);
   return (
     <>
+      <ScrambleCode />
+      <div>{inspectionTime}</div>
+      <div>{time}</div>
       <button onClick={handleSendTimes} disabled={changeDisabled}>
         send
       </button>
-      <div>{inspectionTime}</div>
-      <div>{time}</div>
     </>
   );
 };
