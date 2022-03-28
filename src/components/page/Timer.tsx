@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useKey } from "react-use";
 import axios from "axios";
 import ScrambleCode from "./ScrambleCode";
+import TimeList from "./TimeList";
 
 const Timer = () => {
   const [start, setStart] = useState<number>(0);
@@ -11,7 +12,7 @@ const Timer = () => {
   const [activeState, setActiveState] = useState<number>(0);
   const [inspectionTime, setInspectionTime] = useState<number>(15);
   const [handleInspection, setHandleInspection] = useState<boolean>(false);
-  const [sendTimes, setSendTimes] = useState<number[]>([]);
+  const [sendTimes, setSendTimes] = useState<number[]>([12, 12, 23]);
   const [changeDisabled, setChangeDisabled] = useState<boolean>(true);
 
   const increment = () => setActiveState((activeState) => activeState + 1);
@@ -85,6 +86,7 @@ const Timer = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startCalc]);
+
   return (
     <>
       <ScrambleCode />
@@ -92,6 +94,7 @@ const Timer = () => {
       <button onClick={handleSendTimes} disabled={changeDisabled}>
         send
       </button>
+      <TimeList sendTimes={sendTimes} />
     </>
   );
 };

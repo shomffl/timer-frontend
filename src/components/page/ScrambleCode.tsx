@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import styled from "styled-components";
 
 const ScrambleCode = () => {
   const [code, setCode] = useState();
@@ -9,7 +10,12 @@ const ScrambleCode = () => {
       .then((res) => setCode(res.data.code));
   }, []);
 
-  return <>{code}</>;
+  return <SFont>{code}</SFont>;
 };
 
 export default ScrambleCode;
+
+const SFont = styled.span`
+  font-size: 3vw;
+  padding: 1vw;
+`;
