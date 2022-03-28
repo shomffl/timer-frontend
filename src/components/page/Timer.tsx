@@ -3,6 +3,7 @@ import { useKey } from "react-use";
 import axios from "axios";
 import ScrambleCode from "./ScrambleCode";
 import TimeList from "./TimeList";
+import styled from "styled-components";
 
 const Timer = () => {
   const [start, setStart] = useState<number>(0);
@@ -90,7 +91,11 @@ const Timer = () => {
   return (
     <>
       <ScrambleCode />
-      {handleInspection ? <div>{inspectionTime}</div> : <div>{time}</div>}
+      {handleInspection ? (
+        <SFont>{inspectionTime}</SFont>
+      ) : (
+        <SFont>{time}</SFont>
+      )}
       <button onClick={handleSendTimes} disabled={changeDisabled}>
         send
       </button>
@@ -100,3 +105,7 @@ const Timer = () => {
 };
 
 export default Timer;
+
+const SFont = styled.div`
+  font-size: 20vw;
+`;
