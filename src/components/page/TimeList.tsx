@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 type TimeListProps = {
   sendTimes: number[];
@@ -6,10 +7,15 @@ type TimeListProps = {
 
 const TimeList: React.FC<TimeListProps> = (props) => {
   const { sendTimes } = props;
-  const timeList = sendTimes.map((time) => {
-    return <li>{time}</li>;
+  const timeList = sendTimes.map((time, key) => {
+    return <li key={key}>{time}</li>;
   });
-  return <ul>{timeList}</ul>;
+  return <SFont>{timeList}</SFont>;
 };
 
 export default TimeList;
+
+const SFont = styled.ul`
+  font-size: 3vw;
+  padding: 0vw;
+`;

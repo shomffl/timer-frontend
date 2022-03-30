@@ -9,22 +9,22 @@ const Timer = () => {
   const [start, setStart] = useState<number>(0);
   const [stop, setStop] = useState<number>(0);
   const [startCalc, setStartCalc] = useState<boolean>(false);
-  const [time, setTime] = useState<number>(0);
+  const [time, setTime] = useState<any>("0.00");
   const [activeState, setActiveState] = useState<number>(0);
   const [inspectionTime, setInspectionTime] = useState<number>(15);
   const [handleInspection, setHandleInspection] = useState<boolean>(false);
-  const [sendTimes, setSendTimes] = useState<number[]>([12, 12, 23]);
-  const [changeDisabled, setChangeDisabled] = useState<boolean>(true);
+  const [sendTimes, setSendTimes] = useState<number[]>([]);
+  const [averageTime, setAverageTime] = useState<number>(0);
 
   const increment = () => setActiveState((activeState) => activeState + 1);
 
-  const handleSendTimes = () => {
+  const handleSendTimes = (times: any) => {
+    setSendTimes([]);
     const data = {
-      times: sendTimes,
+      times: times,
     };
     axios.post("http://127.0.0.1:8000/record-times", data).then((res) => {
       console.log(res.data);
-      setSendTimes([]);
     });
   };
 
@@ -33,7 +33,6 @@ const Timer = () => {
     if (handleInspection === true) {
       const interval = setInterval(() => {
         setInspectionTime(inspectionTime - 1);
-        console.log(inspectionTime);
       }, 1000);
       return () => {
         clearInterval(interval);
@@ -78,11 +77,15 @@ const Timer = () => {
       const calc: number = (stop - start) / 1000;
       const format_calc: number = Number(calc.toFixed(3));
       setTime(format_calc);
-      setSendTimes([...sendTimes, format_calc]);
-      if (sendTimes.length === 9) {
-        setChangeDisabled(false);
-      } else {
-        setChangeDisabled(true);
+      const item_list = [...sendTimes, format_calc];
+      setSendTimes(item_list);
+      const total = item_list.reduce((sum, element) => sum + element, 0);
+      const average_calc: number = Number(
+        (total / item_list.length).toFixed(3)
+      );
+      setAverageTime(average_calc);
+      if (item_list.length === 10) {
+        handleSendTimes(item_list);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,16 +93,19 @@ const Timer = () => {
 
   return (
     <>
-      <ScrambleCode />
-      {handleInspection ? (
-        <SFont>{inspectionTime}</SFont>
-      ) : (
-        <SFont>{time}</SFont>
-      )}
-      <button onClick={handleSendTimes} disabled={changeDisabled}>
-        send
-      </button>
-      <TimeList sendTimes={sendTimes} />
+      <ScrambleCode sendTimes={sendTimes} />
+      <TimePosition>
+        {handleInspection ? (
+          <SFont>{inspectionTime}</SFont>
+        ) : (
+          <SFont>{time}</SFont>
+        )}
+      </TimePosition>
+
+      <TimeListPosition>
+        <div style={{ fontSize: "3vw" }}>AVG : {averageTime}</div>
+        <TimeList sendTimes={sendTimes} />
+      </TimeListPosition>
     </>
   );
 };
@@ -108,4 +114,16 @@ export default Timer;
 
 const SFont = styled.div`
   font-size: 20vw;
+`;
+
+const TimePosition = styled.div`
+  position: absolute;
+  left: 12vw;
+  top: 20vh;
+`;
+
+const TimeListPosition = styled.div`
+  position: absolute;
+  top: 7vw;
+  left: 80vw;
 `;
