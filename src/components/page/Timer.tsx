@@ -23,9 +23,11 @@ const Timer = () => {
     const data = {
       times: times,
     };
-    axios.post("http://127.0.0.1:8000/record-times", data).then((res) => {
-      console.log(res.data);
-    });
+    axios
+      .post(`${process.env.REACT_APP_AWS_URL}/record-times`, data)
+      .then((res) => {
+        console.log(res.data);
+      });
   };
 
   // インスペクションタイムのカウントダウンを行う
