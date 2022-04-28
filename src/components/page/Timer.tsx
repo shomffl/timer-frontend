@@ -17,7 +17,6 @@ const Timer = () => {
   const [averageTime, setAverageTime] = useState<number>(0);
 
   const increment = () => setActiveState((activeState) => activeState + 1);
-
   const handleSendTimes = (times: any) => {
     setSendTimes([]);
     const data = {
@@ -106,7 +105,7 @@ const Timer = () => {
 
       <TimeListPosition>
         <div style={{ fontSize: "3vw" }}>AVG : {averageTime}</div>
-        <TimeList sendTimes={sendTimes} />
+        <TimeList sendTimes={sendTimes} setSendTimes={setSendTimes} />
       </TimeListPosition>
     </>
   );
