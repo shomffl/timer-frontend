@@ -4,6 +4,7 @@ import axios from "axios";
 import ScrambleCode from "./ScrambleCode";
 import TimeList from "./TimeList";
 import styled from "styled-components";
+import CreateSheetModal from "./CreateSheetModal";
 
 const Timer = () => {
   const [start, setStart] = useState<number>(0);
@@ -95,6 +96,11 @@ const Timer = () => {
   return (
     <>
       <ScrambleCode sendTimes={sendTimes} />
+
+      <div style={{ position: "absolute", top: 10, right: 20 }}>
+        <CreateSheetModal />
+      </div>
+
       <TimePosition>
         {handleInspection ? (
           <SFont>{inspectionTime}</SFont>
