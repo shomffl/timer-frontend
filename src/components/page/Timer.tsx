@@ -17,8 +17,12 @@ const Timer = () => {
   const [sendTimes, setSendTimes] = useState<number[]>([]);
   const [averageTime, setAverageTime] = useState<number>(0);
 
+  // キーボード操作
   const increment = () => setActiveState((activeState) => activeState + 1);
-  const handleSendTimes = (times: any) => {
+  useKey(" ", increment, { event: "keyup" });
+
+  // 計測したタイムをバックエンドへ送信する
+  const handleSendTimes = (times: number[]) => {
     setSendTimes([]);
     const data = {
       times: times,
@@ -57,8 +61,6 @@ const Timer = () => {
     }
     return () => setInspectionTime(15);
   }, [activeState]);
-
-  useKey(" ", increment, { event: "keyup" });
 
   // 計測開始
   const StartTimer = () => {
